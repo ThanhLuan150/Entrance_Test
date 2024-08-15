@@ -84,7 +84,7 @@ const GameComponent = () => {
     if (isTimerRunning) {
       interval = setInterval(() => {
         setTimer((prevTime) => prevTime + 1);
-      }, 1000);
+      }, 100);
     }
     return () => {
       clearInterval(interval);
@@ -133,7 +133,9 @@ const GameComponent = () => {
       </div>
       <div style={{ display: 'flex', gap: 30 }}>
         <p style={{ fontWeight: 'bold' }}>Time</p>
-        <div style={{ paddingTop: 15 }}>{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}</div>
+        <div style={{ paddingTop: 15 }}>
+          {(timer / 10).toFixed(1)}s 
+        </div>
       </div>
       <div style={{ marginBottom: '10px' }}>
         {finish ? (
