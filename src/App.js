@@ -53,12 +53,16 @@ const GameComponent = () => {
           point.id === id ? { ...point, selected: true } : point
         )
       );
-      setNextIdToSelect((prevId) => prevId + 1); 
-      setIsTimerRunning(true);
+      setTimeout(() => {
+        setPoints((prevPoints) => prevPoints.filter((point) => point.id !== id));
+        setNextIdToSelect((prevId) => prevId + 1); 
+        setIsTimerRunning(true);
+      }, 300);
     } else {
-      alert(`Please select the point`);
+      alert(`Please select the correct point`);
     }
   };
+  
 
   const handleRestart = () => {
     const numPoints = parseInt(inputValue, 10);
