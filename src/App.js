@@ -24,16 +24,16 @@ const GameComponent = () => {
   const generatePoints = (numPoints) => {
     let newPoints = Array.from({ length: numPoints }, (_, index) => ({
       id: index + 1,
-      selected: false, 
-      top: Math.random() * 300, 
+      selected: false,
+      top: Math.random() * 300,
       left: Math.random() * 300,
     }));
-    newPoints = shuffleArray(newPoints); 
+    newPoints = shuffleArray(newPoints);
     setPoints(newPoints);
     setAllCleared(false);
-    setTimer(0); 
-    setIsTimerRunning(false);
-    setNextIdToSelect(1); 
+    setTimer(0);
+    setIsTimerRunning(true); // Start the timer when points are generated
+    setNextIdToSelect(1);
     setFinish(true);
   };
 
@@ -55,14 +55,16 @@ const GameComponent = () => {
       );
       setTimeout(() => {
         setPoints((prevPoints) => prevPoints.filter((point) => point.id !== id));
-        setNextIdToSelect((prevId) => prevId + 1); 
-        setIsTimerRunning(true);
+        setNextIdToSelect((prevId) => prevId + 1);
+        
+        if (points.length > points) {
+          setIsTimerRunning(false); 
+        }
       }, 300);
     } else {
-      alert(`Please select the correct point`);
+      alert(`Game Over. Please click restart !`);
     }
   };
-  
 
   const handleRestart = () => {
     const numPoints = parseInt(inputValue, 10);
@@ -94,7 +96,7 @@ const GameComponent = () => {
   useEffect(() => {
     if (points.length > 0 && points.every((point) => point.selected)) {
       setAllCleared(true);
-      setIsTimerRunning(false); 
+      setIsTimerRunning(false);
     }
   }, [points]);
 
@@ -134,7 +136,7 @@ const GameComponent = () => {
       <div style={{ display: 'flex', gap: 30 }}>
         <p style={{ fontWeight: 'bold' }}>Time</p>
         <div style={{ paddingTop: 15 }}>
-          {(timer / 10).toFixed(1)}s 
+          {(timer / 10).toFixed(1)}s
         </div>
       </div>
       <div style={{ marginBottom: '10px' }}>
