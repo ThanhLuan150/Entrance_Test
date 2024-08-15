@@ -62,6 +62,7 @@ const GameComponent = () => {
         }
       }, 300);
     } else {
+      setIsTimerRunning(false); 
       alert(`Game Over. Please click restart !`);
     }
   };
