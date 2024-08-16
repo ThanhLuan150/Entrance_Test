@@ -7,6 +7,7 @@ const GameComponent = () => {
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [nextIdToSelect, setNextIdToSelect] = useState(1);
+  const [gameOver, setGameOver] = useState(false);
   const [finish, setFinish] = useState(false);
 
   const handleInputChange = (e) => {
@@ -32,8 +33,9 @@ const GameComponent = () => {
     setPoints(newPoints);
     setAllCleared(false);
     setTimer(0);
-    setIsTimerRunning(true); // Start the timer when points are generated
+    setIsTimerRunning(true);
     setNextIdToSelect(1);
+    setGameOver(false);
     setFinish(true);
   };
 
@@ -47,6 +49,8 @@ const GameComponent = () => {
   };
 
   const handleClearPoint = (id) => {
+    if (gameOver) return; // Prevent any further actions if the game is over
+
     if (id === nextIdToSelect) {
       setPoints((prevPoints) =>
         prevPoints.map((point) =>
@@ -57,13 +61,14 @@ const GameComponent = () => {
         setPoints((prevPoints) => prevPoints.filter((point) => point.id !== id));
         setNextIdToSelect((prevId) => prevId + 1);
         
-        if (points.length > points) {
-          setIsTimerRunning(false); 
+        if (points.length === 1) { // All points are cleared
+          setAllCleared(true);
+          setIsTimerRunning(false);
         }
       }, 300);
     } else {
-      setIsTimerRunning(false); 
-      alert(`Game Over. Please click restart !`);
+      setIsTimerRunning(false);
+      setGameOver(true);
     }
   };
 
@@ -78,6 +83,7 @@ const GameComponent = () => {
       setTimer(0);
       setIsTimerRunning(false);
       setNextIdToSelect(1);
+      setGameOver(false);
       setFinish(false);
     }
   };
@@ -122,6 +128,8 @@ const GameComponent = () => {
     <div style={{ paddingLeft: 10, paddingTop: 10 }}>
       {allCleared ? (
         <h3>ALL CLEARED!</h3>
+      ) : gameOver ? (
+        <h3 style={{ color:'red' }}>GAME OVER!</h3>
       ) : (
         <h3>LET'S PLAY</h3>
       )}
